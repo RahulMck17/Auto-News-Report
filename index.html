@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOBRIEF — 15–31 Jul 2026</title>
+<style>
+:root{
+  --bg:#F4F5F7;--panel:#FFFFFF;--panel-2:#F1F3F6;--line:#E3E6EB;--line-2:#EDEFF3;
+  --ink:#12151B;--ink-2:#3A4149;--muted:#6A7280;--dim:#9AA1AC;
+  --accent:#1D4ED8;--accent-ink:#173FB0;--red:#C62B2B;--slate:#475569;--navy:#1E3A8A;
+  --radius:10px;--maxw:1000px;
+  --sh:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.06);
+  --sh-h:0 6px 18px -8px rgba(16,24,40,.18);
+  --fs-lg:16px;--fs-md:14px;--fs-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:var(--fs-md);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px 80px}
+a{color:var(--accent)}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:40;opacity:0;transition:width .08s linear}
+body[data-view="story"] #progress{opacity:1}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--sh)}
+.hbar{max-width:var(--maxw);margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+.brand .logo{width:22px;height:22px;flex:none}
+.brand .name{font-size:var(--fs-lg);font-weight:700;letter-spacing:.12em}
+.brand .name b{color:var(--accent)}
+.hmeta{margin-left:auto;font-size:var(--fs-sm);color:var(--dim);letter-spacing:.05em;text-transform:uppercase}
+.back{display:none;align-items:center;gap:6px;background:none;border:1px solid var(--line);color:var(--muted);font-family:inherit;font-size:var(--fs-sm);font-weight:700;letter-spacing:.03em;padding:6px 11px;border-radius:7px;cursor:pointer;text-transform:uppercase;transition:.15s}
+.back:hover{border-color:var(--muted);color:var(--ink);background:var(--panel-2)}
+.back svg{width:12px;height:12px}
+body[data-view="story"] .back,body[data-browse="cat"] .back{display:inline-flex}
+
+/* masthead */
+.mast{padding:34px 0 20px}
+.eyebrow{font-size:var(--fs-sm);font-weight:700;letter-spacing:.16em;color:var(--accent);text-transform:uppercase}
+.mast h1{font-size:var(--fs-lg);font-weight:700;margin:11px 0 9px;line-height:1.35}
+.mast p{color:var(--muted);max-width:74ch}
+.mast .sum{margin-top:12px;font-size:var(--fs-sm);font-weight:700;color:var(--ink-2);letter-spacing:.04em}
+.pmeter{margin-top:16px;max-width:340px}
+.pmeter .pt{display:flex;justify-content:space-between;font-size:var(--fs-sm);font-weight:700;color:var(--ink-2);margin-bottom:6px}
+.pmeter .ptrack{height:6px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.pmeter .pfill{height:100%;background:var(--accent);width:0;transition:width .6s cubic-bezier(.2,.7,.2,1)}
+
+/* category nav row */
+.catnav{position:sticky;top:47px;z-index:15;background:var(--bg);display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.navchip{font-family:inherit;font-size:var(--fs-sm);font-weight:700;letter-spacing:.03em;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 13px;cursor:pointer;transition:.14s}
+.navchip:hover{border-color:var(--muted);color:var(--ink)}
+.navchip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* section label */
+.slabel{display:flex;align-items:center;gap:12px;margin:26px 0 15px}
+.slabel h2{font-size:var(--fs-sm);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.slabel .fill{flex:1;height:1px;background:var(--line)}
+
+/* feature cards (top 4) */
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:720px){.features{grid-template-columns:1fr}}
+.fcard{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 18px 22px;cursor:pointer;overflow:hidden;transition:transform .16s,box-shadow .16s;text-align:left;color:inherit;font:inherit;box-shadow:var(--sh)}
+.fcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc)}
+.fcard:hover{transform:translateY(-2px);box-shadow:var(--sh-h)}
+.fcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.clabel{display:inline-flex;align-items:center;gap:7px;font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.clabel .cdot{width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.fcard h3{font-size:var(--fs-lg);font-weight:700;line-height:1.32;margin:11px 0 9px}
+.fcard .keystat{display:flex;align-items:baseline;gap:8px;margin:12px 0 4px;padding-top:12px;border-top:1px solid var(--line-2)}
+.fcard .keystat .kv{font-size:var(--fs-lg);font-weight:700;color:var(--acc)}
+.fcard .keystat .kl{font-size:var(--fs-sm);color:var(--muted)}
+.fcard .rd{display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:var(--fs-sm);font-weight:700;color:var(--acc)}
+.fcard .rd .rt{display:inline-flex;align-items:center;gap:5px;color:var(--dim);font-weight:400}
+
+/* compact cards (more + category listing) */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.ccard{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px 14px 18px;cursor:pointer;overflow:hidden;transition:transform .14s,box-shadow .14s;text-align:left;color:inherit;font:inherit;box-shadow:var(--sh)}
+.ccard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc)}
+.ccard:hover{transform:translateY(-2px);box-shadow:var(--sh-h)}
+.ccard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ccard .ct{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ccard h4{font-size:var(--fs-md);font-weight:700;line-height:1.32;margin-bottom:6px}
+.ccard p{font-size:var(--fs-sm);color:var(--muted);line-height:1.55}
+.ccard .cm{display:flex;align-items:center;gap:12px;margin-top:10px;font-size:var(--fs-sm);color:var(--dim);flex-wrap:wrap}
+.ccard .cm .rd{margin-left:auto;font-weight:700;color:var(--acc);display:inline-flex;align-items:center;gap:5px}
+.readmark{display:inline-flex;align-items:center;gap:4px;color:var(--acc);font-weight:700;font-size:var(--fs-sm)}
+.readmark svg{width:13px;height:13px}
+.sig{font-size:var(--fs-sm);font-weight:700;letter-spacing:.04em;color:var(--red);border:1px solid var(--red);border-radius:5px;padding:1px 7px;text-transform:uppercase}
+
+/* category tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:720px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:14px 15px;cursor:pointer;text-align:left;color:inherit;font:inherit;box-shadow:var(--sh);transition:.15s;border-top:2px solid var(--acc)}
+.tile:hover{transform:translateY(-2px);box-shadow:var(--sh-h)}
+.tile .tn{font-size:var(--fs-md);font-weight:700;line-height:1.3}
+.tile .tc{font-size:var(--fs-sm);color:var(--dim);margin-top:6px}
+
+/* code chip / badge */
+.tag-chip{font-size:var(--fs-sm);font-weight:700;letter-spacing:.03em;color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,#fff);border:1px solid color-mix(in srgb,var(--acc) 32%,#fff);border-radius:20px;padding:2px 10px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-sm);font-weight:700;color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line);border-radius:20px;padding:3px 11px}
+.badge .bdot{width:6px;height:6px;border-radius:50%;background:var(--acc)}
+
+/* category header (browse) */
+.cathead{padding:8px 0 4px}
+.cathead h2{font-size:var(--fs-lg);font-weight:700}
+.cathead p{color:var(--muted);max-width:72ch;margin-top:6px}
+.cathead .cc{font-size:var(--fs-sm);color:var(--dim);margin-top:8px}
+
+/* ===== STORY PAGE ===== */
+.article{max-width:760px;margin:0 auto}
+.a-crumbs{font-size:var(--fs-sm);font-weight:700;color:var(--dim);letter-spacing:.05em;text-transform:uppercase;margin:24px 0 12px}
+.a-crumbs b{color:var(--acc)}
+.article h1{font-size:var(--fs-lg);font-weight:700;line-height:1.4;margin-bottom:14px}
+.a-meta{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:var(--fs-sm);color:var(--muted);padding-bottom:16px;border-bottom:1px solid var(--line)}
+.a-meta svg{width:13px;height:13px;color:var(--dim)}
+.a-meta .src{font-weight:700}
+.a-meta a{font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.a-meta a:hover{text-decoration:underline}
+.a-meta a svg{width:12px;height:12px;color:var(--acc)}
+.signal-banner{display:flex;align-items:center;gap:9px;margin:16px 0 0;background:color-mix(in srgb,var(--red) 7%,#fff);border:1px solid color-mix(in srgb,var(--red) 30%,#fff);border-radius:9px;padding:10px 14px;font-size:var(--fs-sm);font-weight:700;color:var(--red);letter-spacing:.04em;text-transform:uppercase}
+.oneline{font-size:var(--fs-md);line-height:1.7;color:var(--ink);margin:18px 0 4px;padding-left:14px;border-left:3px solid var(--acc);font-weight:700}
+.src-btn{display:inline-flex;align-items:center;gap:9px;margin:16px 0 2px;background:var(--accent);color:#fff;font-family:inherit;font-size:var(--fs-md);font-weight:700;padding:11px 18px;border-radius:9px;text-decoration:none;transition:.15s}
+.src-btn:hover{background:var(--accent-ink);transform:translateY(-1px);box-shadow:0 8px 20px -8px var(--accent)}
+.src-btn svg{width:15px;height:15px}
+
+/* three exec cards */
+.exec2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 12px}
+@media(max-width:640px){.exec2{grid-template-columns:1fr}}
+.ecard{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px;box-shadow:var(--sh)}
+.ecard .el{font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.ecard .el::before{content:"";width:14px;height:2px;background:var(--acc);border-radius:2px}
+.ecard p{font-size:var(--fs-md);color:var(--ink-2);line-height:1.6}
+.changes{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px;box-shadow:var(--sh);margin-bottom:8px}
+.changes>.el{font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.changes>.el::before{content:"";width:14px;height:2px;background:var(--acc);border-radius:2px}
+.cgroup+.cgroup{margin-top:14px;padding-top:14px;border-top:1px solid var(--line-2)}
+.cgh{font-size:var(--fs-sm);font-weight:700;color:var(--muted);letter-spacing:.03em;margin-bottom:11px}
+.ctiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:700px){.ctiles{grid-template-columns:repeat(2,1fr)}}
+.ctile{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:13px}
+.ctile .v{font-size:var(--fs-lg);font-weight:700;color:var(--acc);line-height:1.15}
+.ctile .l{font-size:var(--fs-sm);color:var(--ink-2);margin-top:6px;line-height:1.45}
+.ctile .tg{display:inline-block;margin-top:7px;font-size:var(--fs-sm);font-weight:700;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.qnote{font-size:var(--fs-sm);color:var(--muted);line-height:1.6;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-2)}
+.qnote b{color:var(--ink-2)}
+
+/* takeaway / watch / sources */
+.takeaway{background:color-mix(in srgb,var(--acc) 6%,#fff);border:1px solid color-mix(in srgb,var(--acc) 30%,#fff);border-left:3px solid var(--acc);border-radius:9px;padding:15px 17px;margin:24px 0}
+.takeaway .tl{font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:7px}
+.takeaway p{font-size:var(--fs-md);color:var(--ink);line-height:1.6}
+.watch{list-style:none;counter-reset:w;display:flex;flex-direction:column;gap:11px;margin:6px 0 2px}
+.watch li{counter-increment:w;display:flex;gap:12px;font-size:var(--fs-md);color:var(--ink-2);line-height:1.55}
+.watch li::before{content:counter(w);flex:none;width:24px;height:24px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);color:var(--muted);font-size:var(--fs-sm);font-weight:700;display:flex;align-items:center;justify-content:center}
+.foot-src{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:15px 17px;margin:22px 0 0;box-shadow:var(--sh)}
+.foot-src .fl{font-size:var(--fs-sm);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.foot-src .srow{display:flex;flex-direction:column;gap:8px}
+.foot-src .srow a{font-size:var(--fs-md);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:7px;word-break:break-word}
+.foot-src .srow a:hover{text-decoration:underline}
+.foot-src .srow a svg{width:13px;height:13px;flex:none}
+.foot-src .srow .lbl{color:var(--muted);font-weight:400}
+
+/* ===== VISUAL EXHIBITS ===== */
+.gfx{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:18px 0;box-shadow:var(--sh)}
+.gfx-cap{display:flex;align-items:center;gap:9px;font-size:var(--fs-sm);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:18px}
+.gfx-cap::before{content:"";width:18px;height:2px;background:var(--acc);border-radius:2px}
+.gfx-note{font-size:var(--fs-sm);color:var(--muted);line-height:1.6;margin-top:16px}
+
+/* flow / process */
+.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+.node{flex:1;min-width:118px;background:var(--panel-2);border:1px solid var(--line);border-top:2px solid var(--acc);border-radius:8px;padding:11px 12px}
+.node .nh{font-size:var(--fs-sm);font-weight:700;color:var(--ink)}
+.node .ns{font-size:var(--fs-sm);color:var(--muted);margin-top:4px;line-height:1.4}
+.arw{flex:none;align-self:center;color:var(--dim);font-weight:700;font-size:var(--fs-lg)}
+.hl-callout{margin-top:14px;background:color-mix(in srgb,var(--acc) 8%,#fff);border:1px solid color-mix(in srgb,var(--acc) 30%,#fff);border-radius:8px;padding:10px 14px;font-size:var(--fs-md);font-weight:700;color:var(--acc);text-align:center}
+.cycle-note{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-size:var(--fs-sm);font-weight:700;color:var(--acc)}
+.cycle-note svg{width:14px;height:14px}
+.branches{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+@media(max-width:640px){.branches{grid-template-columns:1fr}}
+.branch{font-size:var(--fs-sm);color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:11px 13px;line-height:1.5}
+
+/* timeline */
+.timeline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tl-step{flex:1;min-width:120px;text-align:center;font-size:var(--fs-sm);font-weight:700;color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:7px 11px}
+
+/* twocol */
+.twocol{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:start}
+@media(max-width:640px){.twocol{grid-template-columns:1fr}.twocol .tw-mid{display:none}}
+.tw-col{background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:14px}
+.tw-col .twh{font-size:var(--fs-sm);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--acc);margin-bottom:11px}
+.tw-col.plain .twh{color:var(--muted)}
+.tw-step{font-size:var(--fs-sm);color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.tw-step+.tw-step{margin-top:6px}
+.tw-mid{align-self:center;text-align:center;font-size:var(--fs-sm);font-weight:700;color:var(--dim);max-width:110px}
+.tw-foot{font-size:var(--fs-sm);color:var(--muted);margin-top:12px;font-style:italic}
+
+/* comparison table */
+.cmp{border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.cmp .cr{display:grid;font-size:var(--fs-sm)}
+.cmp .cr>div{padding:9px 12px;border-bottom:1px solid var(--line)}
+.cmp .cr:last-child>div{border-bottom:none}
+.cmp .cr.head>div{background:var(--panel-2);font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.cmp .cr>div:not(:last-child){border-right:1px solid var(--line)}
+.cmp .cr .k{font-weight:700;color:var(--ink)}
+
+/* layers */
+.layers{display:flex;flex-direction:column}
+.layer{background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:13px 15px;text-align:center}
+.layer .lh{font-size:var(--fs-sm);font-weight:700;color:var(--ink);margin-bottom:6px}
+.layer .lchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.layer .lchips span{font-size:var(--fs-sm);color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+.layer.mid{background:color-mix(in srgb,var(--acc) 9%,#fff);border:2px solid var(--acc)}
+.layer.mid .lh{color:var(--acc)}
+.layer.mid .lchips span{border-color:color-mix(in srgb,var(--acc) 40%,#fff);color:var(--acc);font-weight:700}
+.vsep{align-self:center;color:var(--dim);font-size:var(--fs-lg);font-weight:700;margin:5px 0}
+.ribbon{margin-top:14px;background:var(--ink);color:#fff;border-radius:8px;padding:10px 14px;font-size:var(--fs-sm);font-weight:700;letter-spacing:.03em;text-align:center}
+
+/* ecosystem */
+.eco{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.eco-top{text-align:center;font-size:var(--fs-sm);font-weight:700;color:var(--acc);margin-bottom:12px}
+.eco .enode{flex:1;min-width:120px;max-width:200px;text-align:center;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:14px}
+.eco .enode.center{border:2px solid var(--acc);background:color-mix(in srgb,var(--acc) 8%,#fff)}
+.eco .enode .en{font-size:var(--fs-md);font-weight:700}
+.eco .enode.center .en{color:var(--acc)}
+.eco .elink{flex:none;color:var(--dim);font-size:var(--fs-lg);font-weight:700}
+.modes{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.mode{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:11px 13px}
+.mode .mk{font-size:var(--fs-sm);font-weight:700;color:var(--acc);white-space:nowrap}
+.mode .mt{font-size:var(--fs-sm);color:var(--ink-2)}
+
+/* mixbar */
+.mixwrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.mixbar{flex:1;min-width:240px}
+.mixbar .mtrack{height:34px;border-radius:8px;overflow:hidden;display:flex;border:1px solid var(--line)}
+.mixbar .seg-el{background:color-mix(in srgb,var(--acc) 22%,#fff);display:flex;align-items:center;padding-left:12px;font-size:var(--fs-sm);font-weight:700;color:var(--accent-ink)}
+.mixbar .seg-bev{background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm);font-weight:700;color:#fff}
+.mixbar .seg-rest{background:var(--panel-2);flex:1}
+.mixbar .mlgd{display:flex;gap:16px;margin-top:9px;font-size:var(--fs-sm);color:var(--muted);flex-wrap:wrap}
+.mixbar .mlgd b{color:var(--ink-2)}
+.growth{flex:none;text-align:center;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:14px 18px}
+.growth .gv{font-size:var(--fs-lg);font-weight:700;color:var(--acc)}
+.growth .gl{font-size:var(--fs-sm);color:var(--muted);margin-top:4px}
+
+/* hub (Bosch) */
+.hub-flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.hub-box{background:var(--acc);color:#fff;border-radius:9px;padding:12px 16px;font-size:var(--fs-md);font-weight:700;text-align:center}
+.hub-io{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 13px;font-size:var(--fs-sm);font-weight:700;color:var(--ink)}
+.feeds{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.feeds .fl{width:100%;text-align:center;font-size:var(--fs-sm);color:var(--dim);margin-bottom:2px}
+.feeds span{font-size:var(--fs-sm);color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+.outs{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.outs .ol{font-size:var(--fs-sm);color:var(--dim);margin-bottom:2px}
+.outs span{font-size:var(--fs-sm);color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:7px;padding:9px 12px}
+
+/* strip */
+.strip{display:flex;flex-wrap:wrap;gap:8px}
+.strip span{font-size:var(--fs-sm);color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line);border-radius:20px;padding:6px 12px}
+
+/* pager */
+.readtime{display:inline-flex;align-items:center;gap:5px}
+.readtime svg{width:13px;height:13px;color:var(--dim)}
+.pager{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin:28px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+@media(max-width:600px){.pager{grid-template-columns:1fr}.pager .pcount{order:-1;padding:6px 0}}
+.pnav{display:flex;align-items:center;gap:11px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px 14px;cursor:pointer;text-align:left;color:inherit;font:inherit;box-shadow:var(--sh);transition:.15s;width:100%}
+.pnav:hover{box-shadow:var(--sh-h);transform:translateY(-1px)}
+.pnav.next{justify-content:flex-end;text-align:right}
+.pnav .pd{display:block;font-size:var(--fs-sm);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.pnav .ph{display:-webkit-box;font-size:var(--fs-sm);font-weight:600;color:var(--ink);line-height:1.35;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pnav svg{width:16px;height:16px;color:var(--acc);flex:none}
+.pcount{display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm);font-weight:700;color:var(--muted);white-space:nowrap;padding:0 8px}
+
+.demo{margin:14px 0 0;padding:9px 14px;background:color-mix(in srgb,var(--accent) 6%,#fff);border:1px solid color-mix(in srgb,var(--accent) 25%,#fff);border-radius:8px;font-size:var(--fs-sm);color:var(--accent-ink)}
+
+/* motion */
+.view{display:none}
+body[data-view="browse"] #view-browse,body[data-view="story"] #view-story{display:block}
+.view.enter{animation:viewIn .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.stagger>*{opacity:0;transform:translateY(10px);animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
+.stagger>*:nth-child(1){animation-delay:.03s}.stagger>*:nth-child(2){animation-delay:.07s}.stagger>*:nth-child(3){animation-delay:.11s}.stagger>*:nth-child(4){animation-delay:.15s}.stagger>*:nth-child(5){animation-delay:.19s}.stagger>*:nth-child(6){animation-delay:.23s}.stagger>*:nth-child(7){animation-delay:.27s}.stagger>*:nth-child(8){animation-delay:.31s}.stagger>*:nth-child(9){animation-delay:.35s}.stagger>*:nth-child(n+10){animation-delay:.39s}
+@keyframes rise{to{opacity:1;transform:none}}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.gfx.reveal .node,.gfx.reveal .callout,.gfx.reveal .layer,.gfx.reveal .mode,.gfx.reveal .enode,.gfx.reveal .tl-step,.gfx.reveal .tw-col,.gfx.reveal .branch,.gfx.reveal .ctile{opacity:0}
+.gfx.reveal.in .node,.gfx.reveal.in .callout,.gfx.reveal.in .layer,.gfx.reveal.in .mode,.gfx.reveal.in .enode,.gfx.reveal.in .tl-step,.gfx.reveal.in .tw-col,.gfx.reveal.in .branch,.gfx.reveal.in .ctile{animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
+.cycle-note svg{animation:spin 9s linear infinite;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.view.enter,.stagger>*,.reveal,.gfx.reveal *,.cycle-note svg{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}}
+
+/* v4 buckets */
+.buckets{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:720px){.buckets{grid-template-columns:1fr}}
+.bucket{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px 24px;cursor:pointer;overflow:hidden;text-align:left;color:inherit;font:inherit;box-shadow:var(--sh);transition:transform .16s,box-shadow .16s}
+.bucket::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--acc)}
+.bucket:hover{transform:translateY(-2px);box-shadow:var(--sh-h)}
+.bucket:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bucket .brow{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;min-height:20px}
+.bucket .bcode{font-size:var(--fs-sm);font-weight:700;letter-spacing:.14em;color:var(--acc);border:1px solid var(--acc);border-radius:5px;padding:2px 8px}
+.bucket .bname{display:block;font-size:var(--fs-lg);font-weight:700;line-height:1.3;margin-bottom:8px}
+.bucket .bdesc{display:block;font-size:var(--fs-md);color:var(--muted);line-height:1.55;min-height:66px}
+.bucket .bfoot{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-2)}
+.bucket .bcount{font-size:var(--fs-sm);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--dim)}
+.bucket .barrow{color:var(--acc);display:flex;transition:transform .16s}
+.bucket:hover .barrow{transform:translateX(3px)}
+
+/* v5 dashboard */
+.dsignals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:760px){.dsignals{grid-template-columns:1fr}}
+.dsignal{background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:9px;padding:15px 16px;box-shadow:var(--sh)}
+.dsignal .sn{font-size:var(--fs-sm);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.dsignal h4{font-size:var(--fs-md);font-weight:700;line-height:1.4;margin-bottom:7px}
+.dsignal p{font-size:var(--fs-sm);color:var(--muted);line-height:1.55}
+.knums{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media(max-width:900px){.knums{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.knums{grid-template-columns:repeat(2,1fr)}}
+.knum{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:9px;padding:13px;box-shadow:var(--sh);cursor:pointer;text-align:left;color:inherit;font:inherit;transition:.14s}
+.knum:hover{transform:translateY(-2px);box-shadow:var(--sh-h)}
+.knum .kv{font-size:var(--fs-lg);font-weight:700;color:var(--accent);line-height:1.1}
+.knum .kl{font-size:var(--fs-sm);color:var(--ink-2);margin-top:6px;line-height:1.4}
+.knum .ktag{display:inline-block;margin-top:6px;font-size:var(--fs-sm);color:var(--muted);background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:820px){.panels{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px;box-shadow:var(--sh)}
+.panel .ph{font-size:var(--fs-sm);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.tbar{display:flex;flex-direction:column;gap:11px}
+.tbar button{background:none;border:none;font:inherit;color:inherit;cursor:pointer;text-align:left;padding:0;width:100%}
+.tbar .tb-top{display:flex;justify-content:space-between;gap:10px;font-size:var(--fs-sm);margin-bottom:5px}
+.tbar .tb-l{font-weight:700;color:var(--ink-2)}
+.tbar .tb-v{font-weight:700;color:var(--acc)}
+.tbar .tb-track{height:8px;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.tbar .tb-fill{height:100%;border-radius:5px}
+.tbar button:hover .tb-l{color:var(--ink)}
+.mseg{height:26px;display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-bottom:12px}
+.mseg span{display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm);font-weight:700;color:#fff;min-width:22px}
+.mlgnd{display:flex;flex-direction:column;gap:9px}
+.mlgnd button{display:flex;align-items:center;gap:9px;background:none;border:none;font:inherit;color:inherit;cursor:pointer;padding:0;text-align:left;width:100%}
+.mlgnd .msw{width:11px;height:11px;border-radius:3px;flex:none}
+.mlgnd .ml{font-size:var(--fs-sm);color:var(--ink-2)}
+.mlgnd .mc{font-size:var(--fs-sm);font-weight:700;color:var(--muted);margin-left:auto}
+.mlgnd button:hover .ml{color:var(--ink)}
+.plist{display:flex;flex-wrap:wrap;gap:8px}
+.plist button{font:inherit;font-size:var(--fs-sm);font-weight:700;color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line);border-radius:20px;padding:6px 12px;cursor:pointer;transition:.14s}
+.plist button:hover{border-color:var(--muted);color:var(--ink)}
+.plist button b{color:var(--accent);margin-left:6px}
+
+/* v6 priority */
+.wstart{display:flex;flex-direction:column;gap:14px}
+.wtier{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--tc);border-radius:9px;padding:14px 16px;box-shadow:var(--sh)}
+.wth{display:flex;align-items:center;gap:9px;font-size:var(--fs-sm);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tc);margin-bottom:8px}
+.wth .wdot{width:8px;height:8px;border-radius:50%;background:var(--tc)}
+.wth .wcount{margin-left:auto;color:var(--dim);font-weight:700}
+.wrows{display:flex;flex-direction:column}
+.wrow{display:flex;align-items:center;gap:14px;background:none;border:none;border-top:1px solid var(--line-2);padding:11px 0;font:inherit;color:inherit;cursor:pointer;text-align:left;width:100%}
+.wrow:first-child{border-top:none}
+.wrow .wh{font-size:var(--fs-md);font-weight:700;color:var(--ink);flex:none;width:44%}
+.wrow .wn{font-size:var(--fs-sm);color:var(--muted);flex:1;line-height:1.45}
+.wrow .wx{color:var(--tc);display:flex;flex:none}
+.wrow:hover .wh{text-decoration:underline}
+@media(max-width:640px){.wrow{flex-direction:column;align-items:flex-start;gap:4px}.wrow .wh{width:auto}.wrow .wx{display:none}}
+.ptag{display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-sm);font-weight:700;border:1px solid;border-radius:20px;padding:1px 9px}
+.ptag .pdot{width:6px;height:6px;border-radius:50%}
+
+/* v8 theme cards — true 3D flip */
+.tcards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;align-items:start}
+@media(max-width:800px){.tcards{grid-template-columns:1fr}}
+.tcard{perspective:1400px}
+.tc-inner{display:grid;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.4,.2,.2,1)}
+.tcard.flipped .tc-inner{transform:rotateY(180deg)}
+.tc-face{grid-area:1/1;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:12px;box-shadow:var(--sh);overflow:hidden}
+.tc-back{transform:rotateY(180deg)}
+.tcard:hover .tc-front{box-shadow:var(--sh-h)}
+.tc-pad{padding:18px 20px}
+.tc-front .tc-pad{cursor:pointer}
+.tc-front .tc-pad:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.tc-head{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.tc-head .tcode{font-size:var(--fs-sm);font-weight:700;letter-spacing:.14em;color:var(--acc);border:1px solid var(--acc);border-radius:5px;padding:2px 8px}
+.tc-head .tname{font-size:var(--fs-lg);font-weight:700}
+.tc-body{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+@media(max-width:520px){.tc-body{grid-template-columns:1fr}}
+.tc-col .cl{font-size:var(--fs-sm);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.tc-sig ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.tc-sig li{font-size:var(--fs-sm);color:var(--ink-2);line-height:1.45;padding-left:14px;position:relative}
+.tc-sig li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.tc-data{display:flex;flex-direction:column;gap:8px}
+.tc-dp{background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:7px;padding:9px 11px}
+.tc-dp .dv{font-size:var(--fs-md);font-weight:700;color:var(--acc);line-height:1.15}
+.tc-dp .dl{font-size:var(--fs-sm);color:var(--ink-2);margin-top:3px;line-height:1.35}
+.tc-cta{margin-top:16px;padding-top:13px;border-top:1px solid var(--line-2);font-size:var(--fs-sm);font-weight:700;color:var(--acc);display:flex;align-items:center;justify-content:space-between}
+.tc-bhead{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.tc-bback{background:none;border:1px solid var(--line);color:var(--muted);border-radius:7px;padding:5px 10px;font:inherit;font-size:var(--fs-sm);font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.tc-bback:hover{border-color:var(--muted);color:var(--ink)}
+.tc-bback svg{width:12px;height:12px}
+.tc-bhead .tname{font-size:var(--fs-md);font-weight:700}
+.tc-list{display:flex;flex-direction:column}
+.tc-item{display:flex;align-items:center;gap:12px;background:none;border:none;border-top:1px solid var(--line-2);padding:12px 0;font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%}
+.tc-item:first-child{border-top:none}
+.tc-item .pdotmini{width:7px;height:7px;border-radius:50%;flex:none}
+.tc-item .th{flex:1;font-size:var(--fs-md);font-weight:700;color:var(--ink);line-height:1.35}
+.tc-item .tmeta{font-size:var(--fs-sm);color:var(--dim);flex:none}
+.tc-item .tx{color:var(--acc);display:flex;flex:none}
+.tc-item:hover .th{text-decoration:underline}
+@media (prefers-reduced-motion:reduce){.tcard,.tc-inner{transition:none}}
+</style>
+</head>
+<body data-view="browse">
+<div id="progress"></div>
+<noscript><div style="padding:20px;font:14px Arial;color:#6A7280">This interactive brief needs JavaScript. Please open it in a web browser (Safari or Chrome) with JavaScript enabled.</div></noscript>
+<header>
+  <div class="hbar">
+    <div class="brand" onclick="goAll()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')goAll()">
+      <svg class="logo" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--accent)" stroke-width="1.8"/><path d="M12 12 L12 5.5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="1.7" fill="var(--accent)"/></svg>
+      <span class="name">AUTO<b>BRIEF</b></span>
+    </div>
+    <button class="back" onclick="onBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>Back</button>
+    <span class="hmeta" id="hmeta">15–31 Jul 2026</span>
+  </div>
+</header>
+<div class="wrap">
+  <section class="view" id="view-browse"><div style="padding:30px 2px;max-width:640px">
+  <div style="font-size:16px;font-weight:700;color:#12151B;margin-bottom:10px">Interactive brief — open in a browser</div>
+  <p style="font-size:14px;color:#6A7280;line-height:1.65;margin-bottom:14px">You are viewing this as a file preview, which cannot run interactive content, so the brief looks blank. To use it, open this file in a web browser such as Safari or Chrome — or open the hosted link if one was shared with you.</p>
+  <p style="font-size:14px;color:#6A7280;line-height:1.65">This fortnight covers 13 developments across four themes: EV &amp; Energy Systems, Autonomous &amp; Vehicle Intelligence, AI-Defined Engineering &amp; Operations, and Cabin &amp; Experience.</p>
+</div></section>
+  <section class="view" id="view-story"></section>
+</div>
+
+<script>
+/* =====================================================================
+   AUTOBRIEF V2 CONTENT PACK — 15–31 Jul 2026 (sole source of truth)
+   ===================================================================== */
+const ACC={EV:"var(--accent)",VI:"var(--red)",AI:"var(--slate)",CX:"var(--navy)"};
+const HOME={
+  edition:"AUTOBRIEF · 15–31 Jul 2026",
+  title:"The technology shifts shaping automotive",
+  intro:"A curated executive brief of the most consequential technology moves across electrification, vehicle intelligence, Physical AI, engineering and cabin experience.",
+  summary:"13 developments · 4 technology themes",
+  featured:[
+    {id:"weride",  kv:"200×", kl:"company-reported processing efficiency"},
+    {id:"bmwgen6", kv:"100%", kl:"end-of-line battery inspection"},
+    {id:"dana",    kv:"Months → days", kl:"critical dev phases in some deployments · company-reported"},
+    {id:"waymo",   kv:"2 stacks", kl:"independent driving + cabin AI in one vehicle"}
+  ],
+  more:["mercedes","hyundaiv2g","bmwcharge","mobileye","arnold","bmwhumanoid","hyundaipai","bosch","imax"]
+};
+const CATEGORIES=[
+  {id:"EV",code:"EV",name:"EV & Energy Systems",desc:"Battery architecture, high-voltage charging and the software layers turning EVs into more integrated energy products."},
+  {id:"VI",code:"VI",name:"Autonomous & Vehicle Intelligence",desc:"Physical AI, cloud road intelligence and fail-operational control technologies changing how automated vehicles learn, understand and execute motion."},
+  {id:"AI",code:"AI",name:"AI-Defined Engineering & Operations",desc:"AI is moving upstream from the vehicle into engineering, factories, robotics and the service lifecycle."},
+  {id:"CX",code:"CX",name:"Cabin & Experience",desc:"AI and entertainment layers are beginning to redesign what passengers do inside increasingly automated vehicles."}
+];
+const STORIES=[
+  {id:"bmwgen6",cat:"EV",company:"BMW Group",date:"27 Jul 2026",geo:"United States / Global",source:"BMW Group",maturity:"Pre-series production",
+    headline:"BMW is turning Gen6 cell-to-pack into a data-controlled battery production system",
+    teaser:"BMW is industrializing direct cell-to-pack alongside inline quality monitoring and AI-supported production for the electric iX5.",
+    oneLine:"BMW is industrializing its Gen6 high-voltage battery for the electric iX5, combining direct cell-to-pack integration with real-time production monitoring and automated quality control.",
+    whatis:"Gen6 uses cylindrical round cells integrated directly into the high-voltage battery under BMW's cell-to-pack principle. The pack also receives the Energy Master central control unit, and every manufacturing step is monitored and documented in real time.",
+    whynow:"BMW is moving a new battery architecture from pre-series builds into December 2026 series production. The challenge is no longer only cell performance; it is reproducing safety, cooling, weld quality and traceability consistently at industrial scale.",
+    changes:[{items:[{v:"300+",l:"employees at Plant Woodruff"},{v:"~250",l:"robots used in production"},{v:"100%",l:"end-of-line inspection of every high-voltage battery"},{v:"~28%",l:"lower cell-production CO₂e per Wh vs Gen5",tag:"BMW-reported"}]}],
+    takeaway:"Battery differentiation is expanding beyond cell chemistry: pack architecture, production data and quality control are increasingly engineered as one system.",
+    watch:["Scale: Does Gen6 maintain zero-defect ambitions once Woodruff enters series production?","Replication: Can BMW reproduce the same architecture and process controls across its global Gen6 network?","Vehicle impact: How much of the benefit appears as charging, packaging, cost and usable-energy improvement?"],
+    primary:{name:"BMW Group — First glimpse into production: Plant Woodruff assembles iX5 batteries",url:"https://www.press.bmwgroup.com/global/article/detail/T0459241EN/first-glimpse-into-production%3A-bmw-group-plant-woodruff-assembles-high-voltage-batteries-for-the-new-bmw-ix5?language=en"},
+    supporting:null,
+    visuals:[
+      {type:"process",caption:"How Gen6 moves through production",steps:[{h:"Cell check",s:"Incoming voltage / quality checks"},{h:"Cluster + cool",s:"Cells connected to coolers"},{h:"Laser clean + weld",s:"Precision contacts; welds inspected inline"},{h:"Foam + protect",s:"Mechanical integration and protection"},{h:"Seal",s:"Housing closed and riveted"},{h:"Energy Master",s:"Central control unit installed"},{h:"100% verify",s:"End-of-line inspection"}]},
+      {type:"cycle",caption:"Closed quality loop",steps:["Inline monitoring","Real-time documentation","AI assistants / agents","Process + quality analysis","Final inspection","Production learning"],note:"Supported by digital twins for planning and VR for training."},
+      {type:"strip",caption:"Also in the announcement",items:["800V battery architecture","144 kWh available energy (US iX5 60 xDrive) · 141 kWh in EU","15 miles from Plant Woodruff to Plant Spartanburg","5 new Gen6 assembly locations in BMW's local-for-local network"]}
+    ]},
+  {id:"mercedes",cat:"EV",company:"Mercedes-Benz",date:"29 Jul 2026",geo:"Europe / Global",source:"Mercedes-Benz Media",maturity:"Production vehicle announced",
+    headline:"Mercedes is bringing 800V charging from flagship EVs into the compact GLA",
+    teaser:"The new GLA combines 800V architecture, up to 320 kW charging and LFP/NMC battery choices in a compact premium SUV.",
+    oneLine:"Mercedes-Benz has launched the electric GLA with an 800V architecture, charging at up to 320 kW and a claimed 270 km of WLTP range added in 10 minutes.",
+    whatis:"The electric GLA uses an 800V electrical architecture for high-power charging. Mercedes will offer a 58 kWh LFP battery on the GLA 200 electric and an 85 kWh NMC battery on the 250+ and 350 4MATIC, with an optional DC converter for 400V stations.",
+    whynow:"Fast charging is moving from a flagship differentiator toward an everyday usability requirement. Bringing 800V into a compact premium SUV reduces the penalty of charging stops and lets Mercedes combine different battery chemistries on the same high-voltage platform.",
+    changes:[{items:[{v:"800V",l:"electrical architecture"},{v:"320 kW",l:"up to, DC charging"},{v:"270 km",l:"up to, WLTP range added in 10 min",tag:"Mercedes-reported"},{v:"657 km",l:"up to, WLTP range",tag:"Mercedes-reported"}]}],
+    takeaway:"800V is moving down the vehicle portfolio; charging architecture may become a segment expectation rather than a premium-only feature.",
+    watch:["Segment migration: How quickly do 800V systems appear in lower-priced EVs?","Cost: Can OEMs retain 800V benefits without premium power-electronics cost?","Chemistry mix: Does LFP + 800V become a repeatable route to lower-priced fast-charging EVs?"],
+    primary:{name:"Mercedes-Benz Media — The all-new Mercedes-Benz GLA",url:"https://media.mercedes-benz.com/en/article/3052582d-2ce8-4add-b6e3-a60b066a1fed"},
+    supporting:null,
+    visuals:[
+      {type:"process",caption:"What 800V translates into",steps:[{h:"800V battery"},{h:"High-power DC charging"},{h:"Power electronics"},{h:"E-drive"}],highlight:"320 kW  →  ~270 km / 10 min"},
+      {type:"table",caption:"One platform, two chemistry positions",head:["Variant","Chemistry","Capacity","Positioning"],cols:"1.3fr .7fr .7fr 1.3fr",rows:[["GLA 200 electric","LFP","58 kWh","Entry / cost-conscious"],["GLA 250+ / 350 4MATIC","NMC","85 kWh","Higher energy / range"]],note:"71 kWh NMC version planned for early 2027."}
+    ]},
+  {id:"hyundaiv2g",cat:"EV",company:"Hyundai Motor Group",date:"24 Jul 2026",geo:"UK first / Global roadmap",source:"Hyundai Motor Group",maturity:"Service rollout beginning 2026",
+    headline:"Hyundai is moving V2G from pilot hardware into the customer energy stack",
+    teaser:"AllDayEnergy unifies smart charging, V2G and V2H inside a common consumer-facing energy service.",
+    oneLine:"Hyundai Motor Group has launched AllDayEnergy, a single service identity for smart charging, vehicle-to-grid and vehicle-to-home functions inside Hyundai and Kia apps.",
+    whatis:"AllDayEnergy unifies three EV energy modes: V1G shifts charging timing based on prices, grid conditions and customer preferences; V2G exports stored vehicle energy back to the grid; V2H lets the EV support household electricity needs and backup power.",
+    whynow:"EV batteries spend most of their time parked. As electricity prices become more dynamic and grids absorb more renewable energy, OEMs can use vehicle software to turn idle storage into a customer cost tool, a home-energy asset and a grid-flexibility resource.",
+    changes:[
+      {group:"Hyundai rollout",items:[{v:"3 modes",l:"V1G + V2G + V2H"},{v:"UK first",l:"rollout via Kia App in H2 2026"},{v:"EU · US · KR",l:"planned expansion"}]},
+      {group:"External UK V2G case study — Ofgem / Kaluza, not Hyundai claims",items:[{v:"£725/yr",l:"earned by trial customers",tag:"Ofgem case study"},{v:"£3.5bn/yr",l:"potential UK system savings cited",tag:"Ofgem case study"}]}
+    ],
+    qnote:"Hyundai's official page contains an inconsistent 'second quarter of 2026' sentence despite publication on 24 July; this brief uses H2 2026 / later this year, which is stated elsewhere on the same page.",
+    takeaway:"EV ownership can expand into an ongoing energy relationship, forcing OEMs to integrate software, utilities and tariffs alongside charging hardware.",
+    watch:["Economics: What recurring value can customers actually capture market by market?","Compatibility: Which vehicle / charger combinations support bidirectional services at scale?","Ownership: Do OEMs own the energy relationship or become one layer inside utility platforms?"],
+    primary:{name:"Hyundai Motor Group — Launches AllDayEnergy, Its Global V2X Service",url:"https://www.hyundaimotorgroup.com/en/news/hyundai-motor-group-launches-alldayenergy-its-global-v2x-service"},
+    supporting:{label:"Supporting source for economics",name:"Ofgem — Case study (UK): Electric vehicle-to-grid charging",url:"https://www.ofgem.gov.uk/publications/case-study-uk-electric-vehicle-grid-v2g-charging"},
+    visuals:[
+      {type:"ecosystem",caption:"The EV becomes an energy node",top:"AllDayEnergy · vehicle-app orchestration",left:"Home",center:"EV",right:"Grid",
+        modes:[{k:"V1G",t:"When to charge — Grid → EV"},{k:"V2G",t:"When to export — EV → Grid"},{k:"V2H",t:"When to power the home — EV → Home"}]}
+    ]},
+  {id:"bmwcharge",cat:"EV",company:"BMW Group",date:"21 Jul 2026",geo:"Europe / Global",source:"BMW Group",maturity:"Software feature rollout",
+    headline:"BMW is making EV charging costs visible in real time from inside the car",
+    teaser:"Neue Klasse vehicles can show price per kWh, energy delivered and running session cost while comparing charging tariffs.",
+    oneLine:"BMW is adding fuel-pump-style price transparency to Neue Klasse vehicles, showing the kWh price, energy added and running charging-session cost in real time.",
+    whatis:"BMW Operating System X displays three live charging variables in the vehicle and app: unit price per kWh, energy delivered and total session cost. The My BMW and MINI apps also compare saved Charging Wallet tariffs with local ad-hoc operator tariffs where available.",
+    whynow:"Public EV charging can expose drivers to multiple operators and tariffs without the simple roadside price display of petrol or diesel. As charging hardware standardizes, software that makes cost and availability predictable becomes part of the EV ownership proposition.",
+    changes:[{items:[{v:"3 values",l:"live: price/kWh + energy added + total cost"},{v:"3.1m",l:"BMW Group charging points worldwide"},{v:"+300,000",l:"points vs December 2025"},{v:"1.1m",l:"points in Europe; 21% in Preferred Partner Network"}]}],
+    takeaway:"As EV hardware normalizes, charging software and price transparency can become a differentiating layer of the customer experience.",
+    watch:["Adoption: Do customers use tariff comparison enough to change charging behaviour?","Integration: Can live cost visibility span roaming partners consistently?","Monetization: Does charging UX become a loyalty / subscription lever for OEM ecosystems?"],
+    primary:{name:"BMW Group — Holiday travel with BMW and MINI electric vehicles",url:"https://www.press.bmwgroup.com/global/article/detail/T0459456EN/holiday-travel-with-bmw-and-mini-electric-vehicles%3A-arrive-with-even-greater-peace-of-mind"},
+    supporting:null,
+    visuals:[
+      {type:"twocol",caption:"Making EV charging behave like a fuel pump",
+        left:{h:"Conventional fuel pump",plain:true,steps:["Visible price / litre","Litres added","Running total"]},
+        mid:"Same price clarity, more moving parts",
+        right:{h:"BMW charging UX",steps:["Tariffs / operator data","Charging Wallet comparison","Price per kWh","kWh added","Running total","Stored session data"]}}
+    ]},
+  {id:"weride",cat:"VI",company:"WeRide",date:"17 Jul 2026",geo:"China / Global",source:"WeRide",maturity:"Foundation model launched",
+    headline:"WeRide is rebuilding autonomous-driving AI around verifiable physical facts",
+    teaser:"WITT turns road video into verified Atomic Physical Facts that can be searched, validated and routed into training workflows.",
+    oneLine:"WeRide has launched WITT, a Physical AI foundation model that converts real-world driving data into verified 'Atomic Physical Facts' for training, evaluation and model iteration.",
+    whatis:"WITT combines visual-language modelling with four steps — Fact Extraction, Fact Reasoning, Fact Verification and Fact Curation. Instead of treating every video frame as equally useful raw data, it identifies and validates physical facts, then routes high-value scenarios into the appropriate learning workflow.",
+    whynow:"Autonomous-driving fleets generate huge volumes of video, but long-tail scenarios are rare and raw data contains noise, interventions and inactive segments. The next bottleneck is extracting trustworthy learning value from road miles, not simply collecting more miles.",
+    changes:[{items:[{v:"98%",l:"up to, lower token cost vs much larger general-purpose models",tag:"WeRide-reported"},{v:"200×",l:"up to, greater data-processing efficiency in comparable workloads",tag:"WeRide-reported"},{v:"10,000",l:"up to, minutes of vehicle video processed per GPU per day",tag:"WeRide-reported"},{v:">100",l:"dynamic tags generated from a single labeling request",tag:"WeRide-reported"}]}],
+    qnote:"Optional evidence: average factual error rate approx. one-third that of leading general-purpose AI models in WeRide's AD scenario-understanding tasks. All performance claims are WeRide-reported.",
+    takeaway:"The autonomous-driving bottleneck may shift from collecting road miles to extracting high-quality, verifiable learning value from those miles fast enough to improve models.",
+    watch:["Validation: Do independent benchmarks support WeRide's claimed efficiency / error-rate gains?","Transfer: Can the fact framework improve production ADAS, not only L4 fleets?","Economics: Does better data curation materially reduce model-training and validation cost?"],
+    primary:{name:"WeRide — Introduces WITT, a Physical AI Cognitive Foundation Model",url:"https://ir.weride.ai/news-releases/news-release-details/weride-introduces-witt-physical-ai-cognitive-foundation-model"},
+    supporting:null,
+    visuals:[
+      {type:"cycle",caption:"The Physical AI learning flywheel",steps:["Real-world vehicle data","WITT","Fact extraction / reasoning / verification / curation","Trusted learning signals","Improved vehicle-side model"],
+        branches:["Rare long-tail facts → GENESIS simulation / scenario expansion","Frequent scenarios → reinforcement learning / workflow optimization","Ambiguous data → human review"],
+        note:"All performance claims are WeRide-reported."}
+    ]},
+  {id:"mobileye",cat:"VI",company:"Mobileye + Stellantis",date:"21 Jul 2026",geo:"US first / Global",source:"Mobileye",maturity:"Customer-nominated · applications expected 2027",
+    headline:"Mobileye is turning cloud road intelligence into a virtual sensor for Stellantis ADAS",
+    teaser:"REM crowdsources semantic road data from millions of vehicles and sends constantly updated intelligence back to future Stellantis vehicles.",
+    oneLine:"Mobileye will bring REM-powered Cloud-Enhanced ADAS to select Stellantis vehicles from 2027, using fleet-collected road intelligence to improve lane and hands-free driving functions.",
+    whatis:"REM uses front-facing cameras in EyeQ-equipped vehicles to collect selected data about lanes, curbs, crosswalks, driving paths and other road features. The cloud converts it into a continuously updated semantic intelligence layer and sends relevant information back to vehicles.",
+    whynow:"Onboard sensors can see the current scene but do not inherently know how a road typically behaves beyond their immediate field of view. Fleet-scale cloud intelligence can provide persistent context about lane geometry, typical paths and changing conditions without a full HD-map stack in each car.",
+    changes:[{items:[{v:">8m",l:"vehicles generated REM data last year"},{v:"34bn",l:"miles of road data last year"},{v:">95%",l:"of public roads covered in US + Europe"},{v:"5 of 10",l:"world's largest automakers contribute REM data"}]}],
+    qnote:"Ecosystem context: more than 230m vehicles built with Mobileye EyeQ through 2025.",
+    takeaway:"ADAS capability can increasingly depend on fleet-scale cloud knowledge, not only the sensors and compute fitted to an individual vehicle.",
+    watch:["Performance: How much does REM improve hands-free availability on real-world unmarked / changing roads?","Scale: Which Stellantis platforms and geographies follow the first US applications?","Strategic control: Do OEMs accept a shared crowdsourced layer or build proprietary road-data networks?"],
+    primary:{name:"Mobileye — Cloud-Enhanced ADAS for select future Stellantis vehicles",url:"https://www.mobileye.com/news/mobileye-to-supply-cloud-enhanced-adas-for-select-future-stellantis-vehicles/"},
+    supporting:null,
+    visuals:[
+      {type:"cycle",caption:"The network effect",steps:["Connected vehicles","Selective road-feature capture","Cloud semantic map (REM)","Lanes + signals + typical paths + changes","Cloud-enhanced ADAS"],
+        note:"The continuously updated cloud layer acts as a 'virtual sensor' beyond each vehicle's onboard cameras and radar."}
+    ]},
+  {id:"arnold",cat:"VI",company:"Arnold NextG",date:"21 Jul 2026",geo:"Europe / Global regulatory context",source:"Arnold NextG",maturity:"Architecture / product positioning",
+    headline:"Arnold NextG is formalizing a fail-operational control layer between autonomy software and vehicle motion",
+    teaser:"The Control Layer validates and translates digital driving commands before they reach steering, braking and propulsion.",
+    oneLine:"Arnold NextG is positioning drive-by-wire as a safety-critical Control Layer that validates autonomous-driving commands before translating them into steering, braking and propulsion.",
+    whatis:"The proposed Control Layer sits between the automated-driving system and vehicle actuators. It validates, prioritizes, monitors and translates driving commands so that digital decisions can become controlled motion even under fault conditions.",
+    whynow:"New UNECE automated-driving frameworks shift safety from passing isolated tests toward demonstrating safety management, validation, approval and operational monitoring across the lifecycle. That raises the importance of a highly available motion-control layer even though the regulations remain technology-neutral.",
+    changes:[{items:[{v:"2 instruments",l:"harmonized ADS: UN Regulation No. 185 + UN GTR No. 26"},{v:"3 domains",l:"behind the layer: steering + braking + propulsion"},{v:"4 functions",l:"Control Layer: validate + prioritize + monitor + translate"},{v:"Not mandated",l:"drive-by-wire positioned as a key enabler, not a requirement"}]}],
+    qnote:"Note: UNECE adopted the global ADS rules in June 2026; Arnold NextG's technical interpretation was published on 21 July. The regulations are technology-neutral and do not mandate drive-by-wire.",
+    takeaway:"Owning an autonomy stack is not enough; fail-operational motion control is becoming a distinct architectural boundary between AI decisions and physical vehicle behaviour.",
+    watch:["Regulation: How do markets transpose UN GTR 26 and apply UN R185?","Architecture: Do OEMs standardize a control layer across multiple autonomy stacks?","Sourcing: Is fail-operational drive-by-wire kept in-house, sourced from Tier-1s or run as an independent platform?"],
+    primary:{name:"Arnold NextG — New Global ADS Regulations",url:"https://www.arnoldnextg.com/company/blog/new-global-ads-regulations"},
+    supporting:{label:"Supporting regulatory source",name:"UNECE — Global automated-driving rules adopted June 2026",url:"https://unece.org/sustainable-development/press/unece-adopts-first-ever-global-rules-allowing-fully-autonomous"},
+    visuals:[
+      {type:"layers",caption:"From decision to controlled motion",
+        top:{h:"Perception & driving intelligence",chips:["Perception / sensing","ADS reasoning + planning"]},
+        mid:{h:"Control Layer",chips:["Validate","Prioritize","Monitor","Translate"]},
+        bottom:{h:"Vehicle motion",chips:["Steering","Braking","Propulsion"]},
+        ribbon:"Safety case → validation → approval → operational monitoring"}
+    ]},
+  {id:"dana",cat:"AI",company:"Applied Intuition",date:"21 Jul 2026",geo:"United States / Global",source:"Applied Intuition",maturity:"Launched · limited early access",
+    headline:"Applied Intuition is using agentic AI to run vehicle-development workflows",
+    teaser:"Dana connects development tools, data and enterprise systems so AI agents can execute multi-step Physical AI engineering tasks.",
+    oneLine:"Applied Intuition has launched Dana, an agentic Physical AI platform that connects engineering tools, data and workflows so AI can execute multi-step development tasks rather than just answer questions.",
+    whatis:"Dana combines agentic AI with Applied Intuition's vehicle-development tooling and infrastructure. Engineers use natural language or command-line interfaces, while the platform integrates with enterprise tools such as Slack and Jira and provides evaluation, traceability and governance for safety-critical Physical AI work.",
+    whynow:"Vehicle development is increasingly fragmented across simulation, validation, data, software, ticketing and deployment systems. As SDVs and autonomy expand, reducing handoffs and tool switching can matter as much as making any single application faster.",
+    changes:[{items:[{v:"Months → days",l:"critical development phases in some internal / select customer deployments",tag:"company-reported"},{v:"Isuzu · Komatsu",l:"named in early access"},{v:"NL + CLI",l:"natural-language and command-line interfaces"},{v:"18 of top 20",l:"global automakers use Applied Intuition solutions",tag:"company context"}]}],
+    takeaway:"AI may move from being a productivity feature inside individual engineering tools to an orchestration layer across the vehicle-development lifecycle.",
+    watch:["Repeatability: Are months-to-days gains repeatable outside selected workflows?","Governance: How are agent actions reviewed in safety-critical development?","Ownership: Does the engineering agent become a platform dependency similar to PLM / ALM tools?"],
+    primary:{name:"Applied Intuition — Launches Dana, the Agentic Platform for Physical AI",url:"https://www.appliedintuition.com/press-releases/applied-intuition-launches-dana"},
+    supporting:null,
+    visuals:[
+      {type:"twocol",caption:"From tool assistant to workflow orchestrator",
+        left:{h:"Traditional",plain:true,steps:["Engineer → Tool A","Handoff → Tool B","Ticket → Tool C","Manual synthesis"]},
+        mid:"Coordinating tasks across tools, not just inside one",
+        right:{h:"Agentic (Dana)",steps:["Engineering objective","Dana agent","Simulation / data / validation / enterprise tools","Evaluation + traceability","Deploy / iterate"]}},
+      {type:"table",caption:"Traditional AI vs agentic engineering",head:["Traditional AI","Agentic engineering"],cols:"1fr 1fr",rows:[["Helps inside a task","Coordinates tasks across tools"]]}
+    ]},
+  {id:"bmwhumanoid",cat:"AI",company:"BMW Group",date:"21 Jul 2026",geo:"Germany",source:"BMW Group",maturity:"R&D / pilot-stage software",
+    headline:"BMW is teaching humanoid robots transferable factory skills instead of fixed routines",
+    teaser:"Landshut combines VLA models, demonstrations and simulation to turn human production know-how into reusable robot policies.",
+    oneLine:"BMW Plant Landshut is developing an open Physical AI software stack that learns production tasks from demonstrations and converts them into reusable robot policies.",
+    whatis:"BMW combines traditional deterministic programming with Vision-Language-Action models. Human demonstrations are captured using cameras, motion-capture suits and data gloves, then converted into generalizable policies that can be tested in simulation and transferred across tasks and potentially different robot systems.",
+    whynow:"Conventional industrial robots work extremely well on repetitive fixed tasks but are costly to reprogram when tasks vary. Humanoid robotics only becomes economically interesting if the same software and learned skills can transfer across changing factory environments and use cases.",
+    changes:[
+      {group:"July software architecture",items:[{v:"2 modes",l:"deterministic programming + VLA models"},{v:"3 capture tools",l:"cameras + motion-capture suits + data gloves"},{v:"Reusable",l:"policies across robot systems / use cases"}]},
+      {group:"Prior 2025 Spartanburg pilot — BMW-reported context",items:[{v:">30,000",l:"BMW X3 supported over 10 months"},{v:">90,000",l:"components moved"},{v:"~1.2m",l:"steps"},{v:"~1,250",l:"operating hours"}]}
+    ],
+    takeaway:"Humanoid-robot economics may depend less on a single robot body and more on whether software can turn factory know-how into reusable, transferable skills.",
+    watch:["Transferability: Can policies move across different robot hardware without extensive retraining?","Reliability: Which flexible tasks survive full-shift production conditions?","Economics: Does reusable software lower integration cost enough to beat conventional automation?"],
+    primary:{name:"BMW Group — Plant Landshut develops software for humanoid robotics",url:"https://www.press.bmwgroup.com/global/article/detail/T0459467EN/bmw-group-plant-landshut-develops-software-for-humanoid-robotics-in-component-production?showMedia=photo"},
+    supporting:{label:"Supporting source for prior pilot metrics",name:"BMW Group — Humanoid robots in production in Germany for the first time",url:"https://www.press.bmwgroup.com/global/article/detail/T0455864EN/bmw-group-to-deploy-humanoid-robots-in-production-in-germany-for-the-first-time?showMedia=photo"},
+    visuals:[
+      {type:"cycle",caption:"How a factory skill becomes software",steps:["Demonstrate","Capture motion / vision / task data","Simulate + motion plan","Learn generalizable policy","Execute on humanoid","Feedback / retrain"],
+        note:"Intelligence stack: perception + learning + simulation + decision-making."}
+    ]},
+  {id:"hyundaipai",cat:"AI",company:"Hyundai Motor Group",date:"24 Jul 2026",geo:"Global / Korea / US",source:"Hyundai Motor Group",maturity:"Strategy + platform roadmap",
+    headline:"Hyundai is linking vehicles, robots and factories into one Physical AI data loop",
+    teaser:"Hyundai wants operational data from four physical domains to continuously improve shared AI models and feed them back into real-world systems.",
+    oneLine:"Hyundai Motor Group has outlined a Physical AI architecture that feeds data from vehicles, factories, logistics and robots back into shared AI models that are then reapplied to real-world operations.",
+    whatis:"The proposed data flywheel connects four operational domains — manufacturing, vehicles, logistics systems and robotics demonstrations — with continuous AI-model improvement. Hyundai also plans a Robot Reference Platform with NVIDIA and uses digital twins to connect AI infrastructure back to factories and vehicle platforms.",
+    whynow:"OEMs already generate large datasets across vehicles and plants, but these are usually optimized within separate functions. Physical AI creates a reason to treat operational data as shared learning infrastructure, especially as robots, autonomous vehicles and AI-defined factories rely on similar perception, simulation and decision technologies.",
+    changes:[{group:"Broader Hyundai roadmap context — not output of the July flywheel itself",items:[{v:"4 domains",l:"operational data domains named in the flywheel"},{v:"50,000",l:"NVIDIA Blackwell GPUs in an existing supply agreement"},{v:"30,000/yr",l:"up to, planned US robot-production capacity by 2028"},{v:"KRW 9tn",l:"Saemangeum AI Valley investment context"}]}],
+    qnote:"Optional secondary context: KRW 42tn planned over a decade for advanced industrial hubs in Korea.",
+    takeaway:"Automotive data could become shared learning infrastructure across product and manufacturing domains rather than remaining siloed by business unit.",
+    watch:["Integration: Can data schemas genuinely span vehicle, factory and robotics domains?","Deployment: Which shared AI capabilities show measurable gains across more than one domain?","Governance: Who owns training data and models across Hyundai's internal and partner ecosystem?"],
+    primary:{name:"Hyundai Newsroom — Physical AI Vision at San Francisco AI Summit",url:"https://www.hyundai.news/eu/articles/press-releases/san-francisco-ai-summit-2026-physical-ai-vision.html"},
+    supporting:null,
+    visuals:[
+      {type:"cycle",caption:"One Physical AI flywheel",steps:["Real-world operations","Operational data","Model training + digital twins + simulation","Improved algorithms / policies","Vehicles · robots · AI factories"],
+        branches:["Domain 1 · Vehicles","Domain 2 · Manufacturing","Domain 3 · Logistics","Domain 4 · Robot demonstrations","Partners · NVIDIA","Partners · Waymo · Boston Dynamics / Google DeepMind"],
+        note:"Four operational data domains feed shared models; partnership nodes sit outside the loop."}
+    ]},
+  {id:"bosch",cat:"AI",company:"Bosch",date:"21 Jul 2026",geo:"Europe / Global aftermarket",source:"Bosch Media Service",maturity:"Product rollout with ESI[tronic] 2026/4",
+    headline:"Bosch is using AI to turn complex vehicle diagnostics into guided repair",
+    teaser:"ESI[tronic]'s new assistant combines diagnostic data, OEM information and repair instructions to guide technicians through fault resolution.",
+    oneLine:"Bosch is adding an AI assistant to ESI[tronic] that combines fault data, repair instructions and OEM information to recommend likely repair paths and guide technicians through diagnosis.",
+    whatis:"The assistant analyzes fault patterns against Bosch diagnostic data, repair instructions, original vehicle-manufacturer data and other sources. Technicians can start with a fault code or keyword, receive structured solution suggestions and keep asking questions during the repair.",
+    whynow:"Electrification, ADAS, software-defined functions and networked electronics make fault isolation more complex while workshops must still diagnose vehicles quickly. AI can act as a translation layer between expanding technical documentation and the technician performing the repair.",
+    changes:[{items:[{v:">130,000",l:"vehicles covered by ESI[tronic]",tag:"Bosch aftermarket context"},{v:">150",l:"vehicle makes covered"},{v:"2026/4",l:"software update planned at year-end"},{v:"No extra cost",l:"in Advanced + Master packages within existing license"}]}],
+    takeaway:"As vehicles become more software- and electronics-heavy, service capability increasingly depends on software that can make complexity usable at workshop level.",
+    watch:["Accuracy: How often do AI suggestions shorten diagnosis without false leads?","Feedback loop: Does workshop interaction improve future guidance?","OEM impact: Will proprietary diagnostic data become more important to aftermarket AI performance?"],
+    primary:{name:"Bosch Media Service — AI assistant optimizes ESI[tronic] diagnostic software",url:"https://www.bosch-presse.de/pressportal/de/en/efficiently-find-the-right-repair-solution-ai-assistant-optimizes-esitronic-diagnostic-software-from-bosch-283840.html"},
+    supporting:{label:"Supporting source for coverage numbers",name:"Bosch Aftermarket — ESI[tronic] vehicle coverage",url:"https://www.boschaftermarket.com/gb/en/diagnostics/ecu-diagnosis/esitronic-vehicle-coverage/"},
+    visuals:[
+      {type:"hub",caption:"From fault code to guided repair",input:"Fault code / symptom",hub:"AI assistant",
+        feeds:["Diagnostic data","OEM data","Repair instructions","Bosch knowledge"],
+        outs:["Ranked repair option / document / next step","Technician question","Iterative guidance"]}
+    ]},
+  {id:"waymo",cat:"CX",company:"Waymo + Google Gemini",date:"29 Jul 2026",geo:"United States",source:"Waymo",maturity:"Beta cabin experience in Ojai",
+    headline:"Waymo is separating cabin AI from driving AI with Gemini",
+    teaser:"Gemini manages passenger interaction in the Ojai but remains independent from the Waymo Driver and has no real-time driving-data access.",
+    oneLine:"Waymo has added Gemini to the Ojai cabin for passenger interaction while keeping it architecturally separate from the Waymo Driver that controls vehicle motion.",
+    whatis:"Gemini in Waymo handles cabin controls, journey information, Waymo education and general knowledge. It can accept a voice request to pull over, but otherwise does not control routing or vehicle movement and does not access real-time driving data.",
+    whynow:"A fully autonomous ride creates two very different AI jobs: one safety-critical system must perceive and control the physical world, while another consumer-facing system can manage comfort, information and personalization. Separating them avoids exposing the driving stack to a general conversational assistant.",
+    changes:[{items:[{v:"2 stacks",l:"independent AI: Waymo Driver + Gemini cabin assistant"},{v:"3 screens",l:"coordinated cabin screens in Ojai"},{v:"Beta",l:"Gemini in Waymo currently in beta"},{v:">20m",l:"fully autonomous trips across 11+ cities (May 2026 context)"}]}],
+    qnote:"Supporting context: the Ojai uses Waymo's 6th-generation Driver.",
+    takeaway:"Autonomous vehicles may need separate safety-critical and consumer-facing AI stacks with different permissions, data access and governance.",
+    watch:["Permissions: Which vehicle functions can conversational AI safely control over time?","Personalization: Does cabin AI become a major reason customers prefer one autonomous mobility service?","Architecture: Do conventional OEMs adopt the same separation between driving AI and cabin AI?"],
+    primary:{name:"Waymo — Say hi to new Ojai in-car experience",url:"https://waymo.com/blog/2026/07/gemini-in-waymo/"},
+    supporting:{label:"Supporting source for Ojai / scale context",name:"Waymo — Same Driver, new vehicle: first rider trips in the Ojai",url:"https://waymo.com/blog/2026/05/welcoming-riders-in-the-ojai/"},
+    visuals:[
+      {type:"twocol",caption:"Two brains, two risk profiles",
+        left:{h:"Safety-critical driving AI · Waymo Driver",steps:["Sensors","World model","Planning","Control","Vehicle motion"]},
+        mid:"Clear separation — no real-time driving-data access",
+        right:{h:"Consumer cabin AI · Gemini",plain:true,steps:["Voice / touch","Cabin controls","Journey info","Everyday knowledge","Personalization"]},
+        foot:"Exception: a rider may ask Gemini to request a pullover."}
+    ]},
+  {id:"imax",cat:"CX",company:"Goer Dynamics + IMAX",date:"15 Jul 2026",geo:"China / Global",source:"IMAX Corporation",maturity:"Development partnership · production targeted end-2026",
+    headline:"Goer Dynamics and IMAX are turning autonomous cabins into branded entertainment systems",
+    teaser:"The partners are developing an IMAX-branded acoustic and display system for premium autonomous-era cabins, targeting production by end-2026.",
+    oneLine:"Goer Dynamics and IMAX are developing an IMAX-branded in-vehicle audio-visual system for autonomous-era cabins, with commercial production targeted by end-2026.",
+    whatis:"The planned system combines an advanced multi-dimensional acoustic architecture with a calibrated high-definition display environment under the IMAX brand, packaging cinema-style audio and visual tuning as a vehicle cabin product.",
+    whynow:"As driving automation reduces the attention passengers must devote to the road, cabin time becomes more usable for entertainment. Suppliers are beginning to productize that future before full autonomy becomes mainstream, especially in premium segments where experience can support differentiation.",
+    changes:[{items:[{v:"2 layers",l:"integrated: acoustic architecture + calibrated HD display"},{v:"1 system",l:"IMAX-branded in-vehicle — described by the partners as a world first"},{v:"End-2026",l:"commercial production targeted"},{v:"Premium China",l:"initial commercial focus: premium automakers in China"}]}],
+    takeaway:"Cabin-experience monetization is starting before full autonomy reaches mass adoption, turning audio, display and content calibration into a potential OEM differentiation layer.",
+    watch:["Production: Does the system reach the stated end-2026 commercial-production target?","OEM adoption: Which premium brands sign on first?","Business model: Is value captured through hardware, branded option packages or recurring content / services?"],
+    primary:{name:"IMAX Corporation — Goer Dynamics and IMAX partner to develop world's first IMAX in-vehicle system",url:"https://investors.imax.com/news-releases/news-release-details/goer-dynamics-and-imax-partner-develop-worlds-first-imax-vehicle"},
+    supporting:null,
+    visuals:[
+      {type:"process",caption:"From passenger cabin to entertainment platform",steps:[{h:"More automated driving"},{h:"More passenger attention"},{h:"Audio + display integration"},{h:"Branded / calibrated experience"},{h:"OEM differentiation"}]},
+      {type:"timeline",caption:"Maturity timeline",steps:["15 Jul partnership announcement","System development / validation","End-2026 production target"]}
+    ]}
+];
+
+/* =====================================================================
+   ENGINE
+   ===================================================================== */
+/* =====================================================================
+   EDITORIAL PRIORITY — YOU CONTROL THIS.  t: 1=Must read, 2=Worth a read,
+   3=Good to know. Change a number to re-tier; remove a line to untag.
+   'note' is your one-line "why" (edit freely).
+   ===================================================================== */
+const PRIORITY={
+  weride:{t:1,note:"Foundational shift: verifiable data may matter more than fleet size"},
+  bmwgen6:{t:1,note:"Battery edge moving from chemistry to industrialisation"},
+  dana:{t:1,note:"Agentic AI could reshape vehicle-development economics"},
+  waymo:{t:1,note:"Sets a pattern: separate driving AI from cabin AI"},
+  mercedes:{t:2,note:"800V becoming a segment expectation, not a flagship feature"},
+  hyundaiv2g:{t:2,note:"EV ownership extending into an energy relationship"},
+  mobileye:{t:2,note:"ADAS increasingly depends on fleet-scale cloud data"},
+  arnold:{t:2,note:"Fail-operational motion control as a distinct platform layer"},
+  bmwhumanoid:{t:2,note:"Reusable factory skills could change automation economics"},
+  bmwcharge:{t:3,note:"Charging UX as an ownership differentiator"},
+  hyundaipai:{t:3,note:"Cross-domain data strategy; long horizon"},
+  bosch:{t:3,note:"AI making service complexity usable at workshop level"},
+  imax:{t:3,note:"Early cabin-experience monetisation signal"}
+};
+const PRIORITY_META={1:{l:"Must read",c:"#C62B2B"},2:{l:"Worth a read",c:"#1D4ED8"},3:{l:"Good to know",c:"#94A3B8"}};
+function prioTag(id){const p=PRIORITY[id];if(!p)return"";const m=PRIORITY_META[p.t];
+  return `<span class="ptag" style="color:${m.c};border-color:${m.c}"><span class="pdot" style="background:${m.c}"></span>${m.l}</span>`;}
+function whereToStart(){
+  const tiers=[1,2,3].map(t=>({t,items:STORIES.filter(x=>PRIORITY[x.id]&&PRIORITY[x.id].t===t)})).filter(x=>x.items.length);
+  if(!tiers.length)return"";
+  const rows=(items)=>items.map(x=>{const p=PRIORITY[x.id];
+    return `<button class="wrow" onclick="openItem('${x.id}')"><span class="wh">${x.headline}</span><span class="wn">${p.note||''}</span><span class="wx">${ICONS.chevR}</span></button>`;}).join("");
+  return `<div class="slabel"><h2>Where to start</h2><span class="fill"></span></div>
+    <div class="wstart stagger">${tiers.map(({t,items})=>{const m=PRIORITY_META[t];
+      return `<div class="wtier" style="--tc:${m.c}"><div class="wth"><span class="wdot"></span>${m.l}<span class="wcount">${items.length}</span></div>
+        <div class="wrows">${rows(items)}</div></div>`;}).join("")}</div>`;
+}
+
+const ICONS={
+  ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4" stroke-linecap="round"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6" stroke-linecap="round"/></svg>',
+  arrowR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  chevL:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  chevR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  loop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9a8 8 0 0 1 14-3l2 2M20 15a8 8 0 0 1-14 3l-2-2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 4v4h-4M4 20v-4h4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+};
+const $=(s)=>document.querySelector(s);
+const story=(id)=>STORIES.find(s=>s.id===id);
+const cat=(id)=>CATEGORIES.find(c=>c.id===id);
+const inCat=(id)=>STORIES.filter(s=>s.cat===id);
+const ORDER=STORIES.map(s=>s.id);
+const READ=new Set();
+let state={view:"browse",sel:{kind:"all",value:null},item:null};
+let io=null;
+
+function setView(v){document.body.dataset.view=v;
+  document.body.dataset.browse=(state.view==="browse"&&state.sel.kind!=="all")?"cat":"all";
+  window.scrollTo({top:0});
+  const el=$("#view-"+v); if(el){el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");}}
+function readTime(it){const t=[it.oneLine,it.whatis,it.whynow,it.takeaway].concat(it.watch||[]).join(" ");
+  return Math.max(2,Math.round(t.trim().split(/\s+/).length/200)+1);}
+function setupReveal(root){ const els=root.querySelectorAll(".reveal");
+  if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("in"));return;}
+  if(io)io.disconnect();
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.1});
+  els.forEach(el=>io.observe(el)); }
+function onScroll(){ if(state.view!=="story")return;
+  const h=document.documentElement,max=h.scrollHeight-h.clientHeight,p=max>0?Math.min(1,h.scrollTop/max):0;
+  const b=$("#progress"); if(b)b.style.width=(p*100)+"%"; }
+window.addEventListener("scroll",onScroll,{passive:true});
+
+/* ---- BROWSE + DASHBOARD ---- */
+const SIGNALS=[
+  {sn:"Signal 1",h:"Autonomy is shifting from more data to verifiable, orchestrated data",
+   p:"WeRide structures road data into verifiable physical facts, Mobileye turns fleet observations into a shared 'virtual sensor', and Arnold NextG separates driving decisions from a fail-operational motion layer."},
+  {sn:"Signal 2",h:"EV advantage is moving from the cell to architecture and industrialisation",
+   p:"BMW industrialises cell-to-pack with inline quality control, Mercedes pushes 800V into a compact SUV, and Hyundai and BMW turn charging and stored energy into software-led customer services."},
+  {sn:"Signal 3",h:"Physical AI is spreading into engineering, factories and the cabin",
+   p:"Agentic engineering, transferable humanoid factory skills, AI-guided diagnostics and a clean split between driving AI and cabin AI push AI beyond the drive stack."}
+];
+const KEYNUMS=[
+  {v:"200×",l:"WeRide data-processing efficiency",tag:"company-reported",id:"weride"},
+  {v:"100%",l:"BMW end-of-line battery inspection",id:"bmwgen6"},
+  {v:"320 kW",l:"Mercedes GLA DC charging",id:"mercedes"},
+  {v:"£725/yr",l:"UK V2G customer earnings",tag:"Ofgem case study",id:"hyundaiv2g"},
+  {v:">8m",l:"vehicles feeding Mobileye REM",id:"mobileye"},
+  {v:"Months→days",l:"Applied Intuition dev phases",tag:"company-reported",id:"dana"}
+];
+const STAGE={bmwgen6:"prod",mercedes:"prod",hyundaiv2g:"launch",bmwcharge:"launch",weride:"launch",mobileye:"launch",dana:"launch",bosch:"launch",waymo:"launch",arnold:"rnd",bmwhumanoid:"rnd",hyundaipai:"rnd",imax:"rnd"};
+const STAGE_META={prod:{l:"In / near production",c:"#1D4ED8"},launch:{l:"Launched / rolling out",c:"#1E3A8A"},rnd:{l:"R&D / roadmap",c:"#94A3B8"}};
+const STAGE_ORDER=["prod","launch","rnd"];
+function players(){const m={};STORIES.forEach(s=>{m[s.company]=(m[s.company]||0)+1;});
+  return Object.entries(m).sort((a,b)=>b[1]-a[1]);}
+
+function navRow(){
+  const chip=(id,label,active)=>`<button class="navchip ${active?'active':''}" onclick="setCat('${id}')">${label}</button>`;
+  const isCat=state.sel.kind==="cat";
+  return `<div class="catnav">${chip('ALL','All',state.sel.kind==='all')}${CATEGORIES.map(c=>chip(c.id,c.name,isCat&&state.sel.value===c.id)).join("")}</div>`;
+}
+function ccard(id){const it=story(id);const c=cat(it.cat);const read=READ.has(id);
+  return `<button class="ccard" style="--acc:${ACC[it.cat]}" onclick="openItem('${id}')">
+    <span class="ct"><span class="tag-chip" style="--acc:${ACC[it.cat]}">${c.code}</span>${prioTag(id)}${it.signal?'<span class="sig">Adoption signal</span>':''}${read?`<span class="readmark">${ICONS.check} Read</span>`:''}</span>
+    <h4>${it.headline}</h4><p>${it.teaser}</p>
+    <span class="cm"><span>${it.date}</span><span>${it.geo}</span><span class="rd">Read analysis ${ICONS.arrowR}</span></span>
+  </button>`;}
+
+function dashboard(){
+  const ws=whereToStart();
+  const signals=SIGNALS.map(s=>`<div class="dsignal"><div class="sn">${s.sn}</div><h4>${s.h}</h4><p>${s.p}</p></div>`).join("");
+  const knums=KEYNUMS.map(k=>`<button class="knum" onclick="openItem('${k.id}')"><div class="kv">${k.v}</div><div class="kl">${k.l}</div>${k.tag?`<span class="ktag">${k.tag}</span>`:''}</button>`).join("");
+
+  const counts=CATEGORIES.map(c=>({c,n:inCat(c.id).length}));
+  const max=Math.max(...counts.map(x=>x.n));
+  const themebars=counts.map(({c,n})=>`<button onclick="setCat('${c.id}')" style="--acc:${ACC[c.id]}">
+      <div class="tb-top"><span class="tb-l">${c.code} · ${c.name}</span><span class="tb-v">${n}</span></div>
+      <div class="tb-track"><div class="tb-fill" style="width:${n/max*100}%;background:${ACC[c.id]}"></div></div></button>`).join("");
+
+  const total=STORIES.length;
+  const stageCounts=STAGE_ORDER.map(k=>({k,n:STORIES.filter(s=>STAGE[s.id]===k).length}));
+  const seg=stageCounts.map(({k,n})=>`<span style="width:${n/total*100}%;background:${STAGE_META[k].c}">${n}</span>`).join("");
+  const mleg=stageCounts.map(({k,n})=>`<button onclick="openList('maturity','${k}')"><span class="msw" style="background:${STAGE_META[k].c}"></span><span class="ml">${STAGE_META[k].l}</span><span class="mc">${n}</span></button>`).join("");
+
+  const plist=players().map(([name,n])=>`<button onclick="openList('player','${name.replace(/'/g,"\\'")}')">${name}<b>×${n}</b></button>`).join("");
+
+  return ws+`<div class="slabel"><h2>This fortnight at a glance</h2><span class="fill"></span></div>
+    <div class="dsignals stagger">${signals}</div>
+    <div class="slabel"><h2>Numbers that stand out</h2><span class="fill"></span></div>
+    <div class="knums stagger">${knums}</div>
+    <div class="slabel"><h2>The shape of the fortnight</h2><span class="fill"></span></div>
+    <div class="panels stagger">
+      <div class="panel"><div class="ph">Where activity concentrated</div><div class="tbar">${themebars}</div></div>
+      <div class="panel"><div class="ph">How mature it is</div><div class="mseg">${seg}</div><div class="mlgnd">${mleg}</div></div>
+      <div class="panel"><div class="ph">Who is moving</div><div class="plist">${plist}</div></div>
+    </div>`;
+}
+
+const THEME_CARD={
+  EV:{signals:[
+      "Battery advantage is shifting from chemistry to cell-to-pack architecture and factory data",
+      "800V fast charging is moving down into compact premium EVs",
+      "Charging and stored energy are becoming software-led customer services"],
+    data:[{v:"100%",l:"End-of-line battery inspection · BMW Gen6"},
+      {v:"320 kW",l:"DC charging · Mercedes GLA"},
+      {v:"\u00A3725/yr",l:"UK V2G customer earnings · Ofgem case study"}]},
+  VI:{signals:[
+      "Autonomy is moving from collecting more data to proving and orchestrating it",
+      "Fleet-scale cloud road intelligence is becoming a shared 'virtual sensor'",
+      "A fail-operational control layer is separating decisions from vehicle motion"],
+    data:[{v:"200\u00D7",l:"Data-processing efficiency · WeRide (company-reported)"},
+      {v:">8m",l:"Vehicles feeding Mobileye REM"},
+      {v:"4 functions",l:"Arnold Control Layer: validate \u00B7 prioritize \u00B7 monitor \u00B7 translate"}]},
+  AI:{signals:[
+      "Agentic AI is beginning to run multi-step vehicle-development workflows",
+      "Humanoid robots are learning transferable factory skills, not fixed routines",
+      "Operational data and diagnostics are becoming shared Physical AI systems"],
+    data:[{v:"Months\u2192days",l:"Dev phases · Applied Intuition (company-reported)"},
+      {v:">130,000",l:"Vehicles covered · Bosch ESI[tronic]"},
+      {v:"4 domains",l:"Operational data in Hyundai's Physical AI flywheel"}]},
+  CX:{signals:[
+      "Driving AI and cabin AI are being kept architecturally separate",
+      "Automated cabins are being productised as branded entertainment"],
+    data:[{v:"2 stacks",l:"Independent driving + cabin AI · Waymo + Gemini"},
+      {v:"3 screens",l:"Coordinated cabin screens · Waymo Ojai"},
+      {v:"End-2026",l:"Production target · Goer Dynamics + IMAX"}]}
+};
+function themeCard(c){
+  const t=THEME_CARD[c.id],items=inCat(c.id),acc=ACC[c.id];
+  const sig=t.signals.map(x=>`<li>${x}</li>`).join("");
+  const data=t.data.map(d=>`<div class="tc-dp"><div class="dv">${d.v}</div><div class="dl">${d.l}</div></div>`).join("");
+  const list=items.map(it=>{const p=PRIORITY[it.id],dot=p?PRIORITY_META[p.t].c:"transparent";
+    return `<button class="tc-item" onclick="openItem('${it.id}')"><span class="pdotmini" style="background:${dot}"></span><span class="th">${it.headline}</span><span class="tmeta">${it.date}</span><span class="tx">${ICONS.chevR}</span></button>`;}).join("");
+  return `<div class="tcard" id="tcard-${c.id}" style="--acc:${acc}">
+    <div class="tc-inner">
+      <div class="tc-face tc-front"><div class="tc-pad" role="button" tabindex="0" onclick="flipCard('${c.id}')" onkeydown="if(event.key==='Enter')flipCard('${c.id}')">
+        <div class="tc-head"><span class="tcode">${c.code}</span><span class="tname">${c.name}</span></div>
+        <div class="tc-body">
+          <div class="tc-col tc-sig"><div class="cl">What's happening</div><ul>${sig}</ul></div>
+          <div class="tc-col tc-data"><div class="cl">Top datapoints</div>${data}</div>
+        </div>
+        <div class="tc-cta"><span>${items.length} stories</span><span>See headlines ${ICONS.arrowR}</span></div>
+      </div></div>
+      <div class="tc-face tc-back"><div class="tc-pad">
+        <div class="tc-bhead"><button class="tc-bback" onclick="unflip('${c.id}')">${ICONS.chevL} Back</button><span class="tname">${c.name}</span></div>
+        <div class="tc-list">${list}</div>
+      </div></div>
+    </div>
+  </div>`;
+}
+function flipCard(id){const el=document.getElementById('tcard-'+id);if(el)el.classList.add('flipped');}
+function unflip(id){const el=document.getElementById('tcard-'+id);if(el)el.classList.remove('flipped');}
+
+function renderBrowse(){
+  let html="";
+  if(state.sel.kind==="all"){
+    const total=STORIES.length,rd=READ.size;
+    html+=`<div class="mast">
+        <div class="eyebrow">${HOME.edition}</div><h1>${HOME.title}</h1><p>${HOME.intro}</p>
+        <div class="sum">${HOME.summary}</div>
+        <div class="pmeter"><div class="pt"><span>Briefing progress</span><span>${rd} of ${total} read</span></div>
+          <div class="ptrack"><div class="pfill" style="width:${rd/total*100}%"></div></div></div>
+      </div>
+      ${whereToStart()}
+      <div class="slabel"><h2>Browse by theme</h2><span class="fill"></span></div>
+      <div class="tcards stagger">${CATEGORIES.map(themeCard).join("")}</div>`;
+  } else {
+    let items=[],htitle="",hdesc="";
+    if(state.sel.kind==="cat"){const c=cat(state.sel.value);items=inCat(c.id);htitle=`${c.code} · ${c.name}`;hdesc=c.desc;}
+    else if(state.sel.kind==="player"){items=STORIES.filter(s=>s.company===state.sel.value);htitle=`Player · ${state.sel.value}`;hdesc=`All ${items.length===1?'story':'stories'} in this brief from ${state.sel.value}.`;}
+    else if(state.sel.kind==="maturity"){items=STORIES.filter(s=>STAGE[s.id]===state.sel.value);htitle=`Maturity · ${STAGE_META[state.sel.value].l}`;hdesc=`Stories at the "${STAGE_META[state.sel.value].l}" stage this fortnight.`;}
+    html+=navRow();
+    html+=`<div class="cathead"><h2 style="color:${state.sel.kind==='cat'?ACC[state.sel.value]:'var(--accent)'}">${htitle}</h2><p>${hdesc}</p>
+        <div class="cc">${items.length} stories</div></div>
+      <div class="slabel"><h2>Stories</h2><span class="fill"></span></div>
+      <div class="grid stagger">${items.map(it=>ccard(it.id)).join("")}</div>`;
+  }
+  $("#view-browse").innerHTML=html;
+}
+
+function setCat(id){state.view="browse";state.sel=(id==="ALL")?{kind:"all",value:null}:{kind:"cat",value:id};state.item=null;renderBrowse();setView("browse");updMeta();}
+function openList(kind,value){state.view="browse";state.sel={kind,value};state.item=null;renderBrowse();setView("browse");updMeta();}
+function goAll(){setCat("ALL");}
+
+
+/* ---- STORY ---- */
+function pnav(dir,id){const st=story(id);const icon=dir==='prev'?ICONS.chevL:ICONS.chevR;const d=dir==='prev'?'Previous':'Next';
+  const label=`<span><span class="pd">${d}</span><span class="ph">${st.headline}</span></span>`;
+  return `<button class="pnav ${dir}" style="--acc:${ACC[st.cat]}" onclick="openItem('${id}')">${dir==='prev'?icon+label:label+icon}</button>`;}
+function renderStory(){
+  const it=story(state.item); if(!it)return goAll();
+  const c=cat(it.cat),acc=ACC[it.cat];READ.add(it.id);
+  const idx=ORDER.indexOf(it.id),prevId=idx>0?ORDER[idx-1]:null,nextId=idx<ORDER.length-1?ORDER[idx+1]:null;
+
+  const changes=`<div class="changes reveal"><div class="el">What changes?</div>
+    ${it.changes.map(g=>`<div class="cgroup">${g.group?`<div class="cgh">${g.group}</div>`:''}
+      <div class="ctiles">${g.items.map(t=>`<div class="ctile"><div class="v">${t.v}</div><div class="l">${t.l}</div>${t.tag?`<span class="tg">${t.tag}</span>`:''}</div>`).join("")}</div></div>`).join("")}
+    ${it.qnote?`<div class="qnote"><b>Note.</b> ${it.qnote}</div>`:''}</div>`;
+
+  const visuals=it.visuals.map(v=>renderGfx(v,acc)).join("");
+  const srcRows=[`<a href="${it.primary.url}" target="_blank" rel="noopener">${ICONS.ext}<span><span class="lbl">Primary source · </span>${it.primary.name}</span></a>`];
+  if(it.supporting) srcRows.push(`<a href="${it.supporting.url}" target="_blank" rel="noopener">${ICONS.ext}<span><span class="lbl">${it.supporting.label} · </span>${it.supporting.name}</span></a>`);
+  const pager=`<div class="pager">${prevId?pnav('prev',prevId):'<span></span>'}<div class="pcount">Story ${idx+1} of ${ORDER.length}</div>${nextId?pnav('next',nextId):'<span></span>'}</div>`;
+
+  $("#view-story").innerHTML=`<article class="article" style="--acc:${acc}">
+    <div class="a-crumbs"><b>${c.code} · ${c.name}</b></div>
+    <h1>${it.headline}</h1>
+    <div class="a-meta">
+      <span>${ICONS.cal}${it.date}</span><span>${ICONS.pin}${it.geo}</span>
+      <span class="src">${ICONS.doc}${it.source}</span>
+      <span class="badge"><span class="bdot" style="background:${acc}"></span>${it.maturity}</span>${prioTag(it.id)}
+      <a href="${it.primary.url}" target="_blank" rel="noopener">${ICONS.ext}Original source</a>
+    </div>
+    ${it.signal?`<div class="signal-banner">${ICONS.pin}Adoption signal — not a technology launch</div>`:''}
+    <p class="oneline">${it.oneLine}</p>
+    <a class="src-btn" href="${it.primary.url}" target="_blank" rel="noopener">View original source ${ICONS.ext}</a>
+    <div class="exec2 reveal">
+      <div class="ecard"><div class="el">What is it?</div><p>${it.whatis}</p></div>
+      <div class="ecard"><div class="el">Why now?</div><p>${it.whynow}</p></div>
+    </div>
+    ${changes}
+    <div class="slabel"><h2>Visual explainer${it.visuals.length>1?'s':''}</h2><span class="fill"></span></div>
+    ${visuals}
+    <div class="takeaway reveal"><div class="tl">CEO takeaway</div><p>${it.takeaway}</p></div>
+    <div class="slabel"><h2>What to watch</h2><span class="fill"></span></div>
+    <ol class="watch reveal">${it.watch.map(w=>`<li>${w}</li>`).join("")}</ol>
+    <div class="foot-src reveal"><div class="fl">Sources</div><div class="srow">${srcRows.join("")}</div></div>
+    ${pager}
+  </article>`;
+  setupReveal($("#view-story")); onScroll();
+}
+
+/* ---- visual renderers ---- */
+function flow(steps,acc){
+  return `<div class="flow">${steps.map((s,i)=>{
+    const node=typeof s==="string"?`<div class="node" style="--acc:${acc}"><div class="nh">${s}</div></div>`
+      :`<div class="node" style="--acc:${acc}"><div class="nh">${s.h}</div>${s.s?`<div class="ns">${s.s}</div>`:''}</div>`;
+    return node+(i<steps.length-1?'<span class="arw">→</span>':'');}).join("")}</div>`;
+}
+function renderGfx(g,acc){
+  let inner="";
+  if(g.type==="process"){
+    inner=flow(g.steps,acc)+(g.highlight?`<div class="hl-callout">${g.highlight}</div>`:"");
+  }else if(g.type==="cycle"){
+    inner=flow(g.steps,acc)+`<div class="cycle-note">${ICONS.loop} Continuous loop — output feeds the next cycle</div>`+
+      (g.branches?`<div class="branches">${g.branches.map(b=>`<div class="branch" style="--acc:${acc}">${b}</div>`).join("")}</div>`:"");
+  }else if(g.type==="timeline"){
+    inner=`<div class="timeline">${g.steps.map((t,i)=>`<div class="tl-step">${t}</div>${i<g.steps.length-1?'<span class="arw">→</span>':''}`).join("")}</div>`;
+  }else if(g.type==="twocol"){
+    const col=(d)=>`<div class="tw-col ${d.plain?'plain':''}"><div class="twh">${d.h}</div>${d.steps.map(s=>`<div class="tw-step">${s}</div>`).join("")}</div>`;
+    inner=`<div class="twocol">${col(g.left)}<div class="tw-mid">${g.mid||"↔"}</div>${col(g.right)}</div>`+(g.foot?`<div class="tw-foot">${g.foot}</div>`:"");
+  }else if(g.type==="table"){
+    const cols=g.cols||("repeat("+g.head.length+",1fr)");
+    inner=`<div class="cmp"><div class="cr head" style="grid-template-columns:${cols}">${g.head.map(h=>`<div>${h}</div>`).join("")}</div>
+      ${g.rows.map(r=>`<div class="cr" style="grid-template-columns:${cols}">${r.map((cell,i)=>`<div class="${i===0?'k':''}">${cell}</div>`).join("")}</div>`).join("")}</div>`+
+      (g.note?`<div class="gfx-note">${g.note}</div>`:"");
+  }else if(g.type==="layers"){
+    const layer=(d,cls)=>`<div class="layer ${cls}"><div class="lh">${d.h}</div><div class="lchips">${d.chips.map(x=>`<span>${x}</span>`).join("")}</div></div>`;
+    inner=`<div class="layers" style="--acc:${acc}">${layer(g.top,"")}<div class="vsep">↓</div>${layer(g.mid,"mid")}<div class="vsep">↓</div>${layer(g.bottom,"")}</div>`+
+      (g.ribbon?`<div class="ribbon">${g.ribbon}</div>`:"");
+  }else if(g.type==="ecosystem"){
+    inner=`${g.top?`<div class="eco-top">${g.top}</div>`:''}
+      <div class="eco" style="--acc:${acc}"><div class="enode"><div class="en">${g.left}</div></div><span class="elink">↔</span>
+      <div class="enode center"><div class="en">${g.center}</div></div><span class="elink">↔</span>
+      <div class="enode"><div class="en">${g.right}</div></div></div>
+      <div class="modes">${g.modes.map(m=>`<div class="mode" style="--acc:${acc}"><span class="mk">${m.k}</span><span class="mt">${m.t}</span></div>`).join("")}</div>`;
+  }else if(g.type==="mixbar"){
+    inner=`<div class="mixwrap"><div class="mixbar" style="--acc:${acc}">
+        <div class="mtrack"><div class="seg-el" style="width:${g.elPct-g.bevPct}%">electrified</div><div class="seg-bev" style="width:${g.bevPct}%">${g.bevPct}% BEV</div><div class="seg-rest"></div></div>
+        <div class="mlgd"><span><b>${g.elLabel}</b></span><span><b>${g.bevLabel}</b></span></div></div>
+        <div class="growth" style="--acc:${acc}"><div class="gv">${g.growth}</div><div class="gl">${g.growthLabel}</div></div></div>`;
+  }else if(g.type==="hub"){
+    inner=`<div class="hub-flow"><div class="hub-io">${g.input}</div><span class="arw">→</span><div class="hub-box" style="background:${acc}">${g.hub}</div></div>
+      <div class="feeds"><span class="fl">Feeds from</span>${g.feeds.map(f=>`<span>${f}</span>`).join("")}</div>
+      <div class="outs"><span class="ol">Produces</span>${g.outs.map(o=>`<span style="--acc:${acc};border-left-color:${acc}">${o}</span>`).join("")}</div>`;
+  }else if(g.type==="strip"){
+    inner=`<div class="strip">${g.items.map(s=>`<span>${s}</span>`).join("")}</div>`;
+  }
+  return `<div class="gfx reveal" style="--acc:${acc}"><div class="gfx-cap">${g.caption}</div>${inner}${g.note&&g.type!=="table"?`<div class="gfx-note">${g.note}</div>`:''}</div>`;
+}
+
+/* ---- nav + keyboard ---- */
+function openItem(id){const it=story(id);state.view="story";state.item=id;renderStory();setView("story");updMeta();}
+function onBack(){if(state.view==="story"){state.view="browse";renderBrowse();setView("browse");updMeta();}else if(state.sel.kind!=="all"){goAll();}}
+function goPrev(){if(state.view!=="story")return;const i=ORDER.indexOf(state.item);if(i>0)openItem(ORDER[i-1]);}
+function goNext(){if(state.view!=="story")return;const i=ORDER.indexOf(state.item);if(i<ORDER.length-1)openItem(ORDER[i+1]);}
+document.addEventListener("keydown",e=>{
+  if(state.view==="story"){if(e.key==="ArrowRight")goNext();else if(e.key==="ArrowLeft")goPrev();else if(e.key==="Escape")onBack();}
+});
+function updMeta(){const el=$("#hmeta");
+  if(state.view==="story"){const it=story(state.item),c=cat(it.cat);el.textContent=c.name;}
+  else if(state.sel.kind==="all")el.textContent="15–31 Jul 2026";
+  else if(state.sel.kind==="cat")el.textContent=cat(state.sel.value).name;
+  else if(state.sel.kind==="player")el.textContent=state.sel.value;
+  else el.textContent=STAGE_META[state.sel.value].l;}
+
+try{renderBrowse();updMeta();}catch(err){var vb=document.getElementById("view-browse");if(vb){vb.innerHTML="<div style=\"padding:28px;font:14px Arial\">This page had trouble loading. Please reload the page.</div>";}}
+</script>
+</body>
+</html>
